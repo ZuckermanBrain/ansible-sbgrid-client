@@ -1,0 +1,13 @@
+if [ -f {{ sb_install_target }}/sbgrid.shrc ];
+then
+	. {{ sb_install_target }}/sbgrid.shrc
+else
+	echo "WARNING: SBGrid environment not found at {{ sb_install_target }}/sbgrid.shrc."
+	echo "================================================================================================"
+	echo "This means that SBGrid is not functioning properly."
+	echo "If SBGrid is hosted on an NFS mount, this error may be correctable by running \"mount {{ sb_install_target }}\"."
+	echo "================================================================================================"
+	echo "If running \"mount {{ sb_install_target }}\" does not work please open a ticket"
+	echo "by e-mailing {{ helpdesk_email }} for further assistance."
+	echo "================================================================================================"
+fi

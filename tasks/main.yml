@@ -1,2 +1,70 @@
 ---
 # tasks file for app-sbgrid-client
+
+- name: Ensure that the install directory is present before mounting.
+  file:
+    path: "{{ sb_install_target }}"
+    state: directory
+
+- name: Add NFS mountpoint containing SBGrid programs.
+  mount:
+    src: "{{ sbgrid_nfs_mount }}"
+    opts: "_netdev,nfsvers=3,tcp,rw,hard,intr,timeo=600,retrans=2"
+    fstype: nfs
+    path: "{{ sb_install_target }}"
+    state: mounted
+
+- name: Enable SBGrid for everyone by default
+  template:
+    src: sbgrid-enable.sh.j2
+    dest: /etc/profile.d/sbgrid-enable.sh
+    mode: "0644"
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Install GUI (required by some apps)
+  yum:
+    name: "@^graphical-server-environment"
+    state: present
+      
+- name: Ensure that x86_64 equivalents to 32-bit compatibility libraries are the latest release to avoid multilib error
+  yum:
+    name:
+      - glibc.x86_64
+      - libgcc.x86_64
+      - libX11.x86_64
+      - libXaw.x86_64
+      - libXext.x86_64
+      - ncurses-libs.x86_64
+      - redhat-lsb.x86_64
+      - libXScrnSaver
+      - freetype.x86_64
+      - fontconfig.x86_64
+      - zlib.x86_64
+      - libstdc++.x86_64
+    state: latest
+
+- name: Install 32-bit libraries and other pre-requisites required by some SBGrid packages
+  yum:
+    name:
+      - glibc.i686
+      - gnome-terminal
+      - libgcc.i686
+      - libX11.i686
+      - libXaw.i686
+      - libXext.i686
+      - ncurses-libs.i686
+      - redhat-lsb.i686
+      - xorg-x11-fonts-75dpi
+      - xorg-x11-fonts-100dpi
+      - xorg-x11-fonts-ISO8859-1-75dpi
+      - xorg-x11-fonts-ISO8859-1-100dpi
+      - xorg-x11-fonts-misc
+      - libXScrnSaver
+      - freetype.i686
+      - fontconfig.i686
+      - zlib.i686
+      - libstdc++.i686
+    state: latest
