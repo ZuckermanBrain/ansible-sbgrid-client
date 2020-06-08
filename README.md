@@ -1,38 +1,26 @@
-Role Name
+app-sbgrid-client
 =========
 
-A brief description of the role goes here.
+This Ansible role configures a shared applications directory for software packaged by the [SBGrid Consortium](https://sbgrid.org/).  It makes use of a shared NFS mountpoint and is intended for GNU/Linux workstations in a networked environment.  Presently only RHEL family distributions are supported.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+An NFS mount must be set up and exported.  The set up of this NFS mount is beyond the scope of this role and should be done in another playbook/role.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+`sb_install_target` (string) : A path to where the NFS mount containing the programs should be mounted.
+`sbgrid_nfs_mount` (string) : The NFS mountpoint (in *host:path* format).
+`helpdesk_email` (string) : An e-mail address for the local contact for technical issues.  Presented to end-users if there is difficulty adding SBGrid applications to the path.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+ * `app-sbgrid-server` must be run on one host in the networked environment.  The host that the `app-sbgrid-server` role is applied to will download and update packages from the SBGrid consortium.
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Revised 3-Clause BSD License
