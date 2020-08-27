@@ -24,13 +24,24 @@
     opts: "_netdev,nfsvers=3,tcp,rw,hard,intr,timeo=600,retrans=2"
     fstype: nfs
     path: "{{ sb_install_target }}"
-    state: mounted
+    state: present
+
+- name: Mount SBGrid NFS mount
+  command: "mount {{ sb_install_target }}"
 
 - name: Enable SBGrid for everyone by default
   template:
     src: sbgrid-enable.sh.j2
     dest: /etc/profile.d/sbgrid-enable.sh
     mode: "0644"
+  when: not sbgrid_module
+
+- name: Enable SBGrid module
+  lineinfile:
+    path: /etc/profile.d/sbgrid-enable.sh
+    line: "export MODULEPATH={{ sb_install_target }}/share/modulefiles/x86_64-linux:${MODULEPATH}"
+    create: yes
+  when: sbgrid_module
 
 - name: Disable SELinux
   selinux:
@@ -38,7 +49,7 @@
 
 - name: Install GUI (required by some apps)
   yum:
-    name: "@^graphical-server-environment"
+    name: "@^gnome-desktop-environment"
     state: present
       
 - name: Ensure that x86_64 equivalents to 32-bit compatibility libraries are the latest release to avoid multilib error

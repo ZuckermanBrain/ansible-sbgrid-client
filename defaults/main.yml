@@ -14,3 +14,4 @@
 # defaults file for app-sbgrid-client
 sb_install_target : /programs
 helpdesk_email : "example@example.com"
+sbgrid_module: False
