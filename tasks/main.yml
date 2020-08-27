@@ -37,10 +37,11 @@
   when: not sbgrid_module
 
 - name: Enable SBGrid module
-  lineinfile:
-    path: /etc/profile.d/sbgrid-enable.sh
-    line: "export MODULEPATH={{ sb_install_target }}/share/modulefiles/x86_64-linux:${MODULEPATH}"
-    create: yes
+  copy:
+    dest: /etc/profile.d/z99-sbgrid-enable.sh
+    content: |
+     export MODULEPATH={{ sb_install_target }}/share/modulefiles/x86_64-linux:${MODULEPATH}
+     module load sbgrid
   when: sbgrid_module
 
 - name: Disable SELinux
