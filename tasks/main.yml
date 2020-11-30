@@ -19,9 +19,10 @@
     state: directory
 
 - name: Add NFS mountpoint containing SBGrid programs.
+  tags: ["sbgrid_client_mountonly"]
   mount:
     src: "{{ sbgrid_nfs_mount }}"
-    opts: "_netdev,nfsvers=3,tcp,rw,hard,intr,timeo=600,retrans=2"
+    opts: "_netdev,x-systemd.automount,nfsvers=3,tcp,rw,hard,intr,timeo=600,retrans=2"
     fstype: nfs
     path: "{{ sb_install_target }}"
     state: present
