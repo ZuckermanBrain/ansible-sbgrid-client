@@ -12,7 +12,9 @@ Role Variables
 --------------
 
 `sb_install_target` (string) : A path to where the NFS mount containing the programs should be mounted.
+
 `sbgrid_nfs_mount` (string) : The NFS mountpoint (in *host:path* format).
+
 `helpdesk_email` (string) : An e-mail address for the local contact for technical issues.  Presented to end-users if there is difficulty adding SBGrid applications to the path.
 
 Dependencies
